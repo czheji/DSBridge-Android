@@ -3,6 +3,8 @@ package wendu.jsbdemo;
 import android.os.CountDownTimer;
 import android.webkit.JavascriptInterface;
 
+import androidx.annotation.Keep;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +14,8 @@ import wendu.dsbridge.CompletionHandler;
  * Created by du on 16/12/31.
  */
 
+@SuppressWarnings("unused")
+@Keep
 public class JsApi{
     @JavascriptInterface
     public String testSyn(Object msg)  {
@@ -21,6 +25,11 @@ public class JsApi{
     @JavascriptInterface
     public void testAsyn(Object msg, CompletionHandler<String> handler){
         handler.complete(msg+" [ asyn call]");
+    }
+
+    @JavascriptInterface
+    public void testThrowException(Object msg, CompletionHandler<String> handler) throws Exception {
+        throw new Exception("native exception!");
     }
 
     @JavascriptInterface

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=0.5,user-scalable=no"/>
     <!--require dsbridge init js-->
-    <script src="https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js"> </script>
+    <script src="./dsbridge.js"> </script>
 </head>
 <style>
     .btn {
@@ -34,6 +34,7 @@
 <div class="btn" onclick="callNoArgAsyn()">Async call without argument</div>
 <div class="btn" onclick="echoSyn()">echo.syn</div>
 <div class="btn" onclick="echoAsyn()">echo.asyn</div>
+<div class="btn" onclick="callAsyncWithEx()">Asynchronous call with Native Exception</div>
 <div class="btn" onclick="callAsyn_()">Stress test，2K times consecutive asynchronous API calls</div>
 <div class="btn" onclick="callNever()">Never call because without @JavascriptInterface annotation<br/>( This test is
     just for Android ,should be ignored in IOS )
@@ -41,7 +42,7 @@
 <div class="btn" onclick="callProgress()">call progress <span id='progress'></span></div>
 <div class="btn" onclick="hasNativeMethod('xx')">hasNativeMethod("xx")</div>
 <div class="btn" onclick="hasNativeMethod('testSyn')">hasNativeMethod("testSyn")</div>
-
+<div class="btn" onclick="callClose()">close page</div>
 <script>
 
     function callSyn() {
@@ -54,11 +55,23 @@
         })
     }
 
+    function callClose() {
+        window.close()
+    }
+
+    function callAsyncWithEx() {
+        dsBridge.call("testThrowException", "hello", function(v){
+            alert(v)
+        })
+    }
+
     function callAsyn_() {
+        var start = new Date().valueOf()
         for (var i = 0; i < 2000; i++) {
             dsBridge.call("testAsyn", "js+" + i, function (v) {
                 if (v == "js+1999 [ asyn call]") {
-                    alert("All tasks completed!")
+                    var ts = new Date().valueOf() - start
+                    alert("All tasks completed!"+ts)
                 }
             })
         }

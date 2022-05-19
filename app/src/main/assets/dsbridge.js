@@ -21,6 +21,8 @@ var bridge = {
            ret = prompt("_dsbridge=" + method, arg);
         }
 
+        console.log('ret:', ret)
+        if(ret&&ret._error) throw new Error(ret._error)
        return  JSON.parse(ret||'{}').data
     },
     register: function (name, fun, asyn) {
